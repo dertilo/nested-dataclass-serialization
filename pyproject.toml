@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "nested-dataclass-serialization"
+version = "0.1.0"
+description = ""
+authors = ["Tilo Himmelsbach <dertilo@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "nested_dataclass_serialization" }]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beartype = "^0.16.3" # since 0.16.3 typehinting for Dataclass really works!
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
