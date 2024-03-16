@@ -118,10 +118,10 @@ class DataclassEncoder(json.JSONEncoder):
                 obj,
             )  # TODO: this is hacky! and not working for deserialization!
         else:
-            obj = just_try(
-                lambda: copy.deepcopy(obj),
-                default=f"{UNSERIALIZABLE}{id(obj)=}{UNSERIALIZABLE}",
-            )
+            # try:
+            obj = copy.deepcopy(obj)
+            # except: # TODO: when is it not possible to deepcopy?
+            #     obj= f"{UNSERIALIZABLE}{id(obj)=}{UNSERIALIZABLE}"
             obj = (
                 obj._to_dict(self.skip_keys)  # noqa: SLF001
                 if hasattr(obj, "_to_dict")
@@ -172,7 +172,7 @@ class DataclassEncoder(json.JSONEncoder):
         return [
             (name, self._obj2dict(value, dict_factory))
             for name, value in name_values
-            if value is not UNDEFINED or not self.skip_undefined
+            if value.__class__.__name__!="_UNDEFINED" or not self.skip_undefined # TODO(tilo): hardcoded this UNDEFINED here! think about it! and fix it!
         ]
 
     def _values_of_non_special_properties(self, obj: Any) -> KeyValues:

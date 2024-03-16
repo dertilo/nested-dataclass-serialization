@@ -44,9 +44,6 @@ def _json_loads_decode_dataclass(
     class_ref_key: str = CLASS_REF_KEY,
     is_sparse: bool = False,
 ) -> Dataclass | JsonLoadsOutput:
-    def fail_fun() -> None:
-        write_file("failed_to_decode.json", s)
-        f"failed to decode: {s[:1000]=}"
 
     if is_sparse:
         dct = json.loads(s)
@@ -61,13 +58,7 @@ def _json_loads_decode_dataclass(
         class_ref_key=class_ref_key,
         nodeid_2_objid=nodeid_2_objid,
     )
-    # TODO: just_try just for debugging
-    return just_try(
-        lambda: json.loads(s, object_hook=object_hook),
-        reraise=True,
-        verbose=True,
-        fail_print_message_supplier=fail_fun,
-    )
+    return json.loads(s, object_hook=object_hook)
 
 
 def serialize_dataclass(  # noqa: PLR0913

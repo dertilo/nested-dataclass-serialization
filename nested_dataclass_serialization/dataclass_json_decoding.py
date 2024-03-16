@@ -30,12 +30,10 @@ class DataclassDecoderObjectHook:
             else:
                 fullpath = dct.pop(self.class_ref_key)
                 # TODO: here some try except with lookup in TARGET_CLASS_MAPPING
-                o = just_try(
-                    lambda: instantiate_via_importlib(dct, fullpath),
-                    reraise=True,
-                    fail_print_message_supplier=lambda: f"could not instantiate: {fullpath}",
-                    verbose=True,
-                )
+                try:
+                    o=instantiate_via_importlib(dct, fullpath)
+                finally:
+                    logger.error(f"could not instantiate: {fullpath}")
                 self.object_registry[eid] = o
         elif NODE_ID_KEY in dct.keys():
             o = self.object_registry[self.nodeid_2_objid[dct[NODE_ID_KEY]]]

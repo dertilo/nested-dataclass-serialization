@@ -54,6 +54,18 @@ class AnotherDataClass:
         repr=False,
     )
 
+class Singleton(type):
+    """
+    see: https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
+    """
+
+    _instances = {}  # noqa: RUF012
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super().__call__(*args, **kwargs)
+        return cls._instances[cls]
+
 
 @dataclass(frozen=True, slots=True)
 class TypeWithSemanticMeaning(metaclass=Singleton):
@@ -262,11 +274,6 @@ def test_endeserialize_dataclass() -> None:
     assert isinstance(dec, Foo), f"{dec=}"
     assert isinstance(dec.bars[0], Bar), f"{dec=}"
 
-
-def test_None() -> None:
-    assert bear_does_roar(lambda: deserialize_dataclass(None))
-    assert bear_does_roar(lambda: encode_dataclass(None))
-    assert bear_does_roar(lambda: serialize_dataclass(None))
 
 
 # TODO

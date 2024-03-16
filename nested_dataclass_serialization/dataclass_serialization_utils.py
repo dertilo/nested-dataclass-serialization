@@ -59,15 +59,7 @@ def shallow_dataclass_from_dict(clazz: type[T], dct: dict) -> T:
         for f in dataclasses.fields(clazz)
         if (f.init and f.name in dct.keys())
     }
-    # print(f"{dct=}")
-    # print(f"{kwargs=}")
-    obj = just_try(
-        lambda: clazz(**kwargs),
-        reraise=True,
-        verbose=True,
-        print_stacktrace=False,
-        fail_print_message_supplier=lambda: f"fail class: {clazz.__name__=}",
-    )
+    obj = clazz(**kwargs)
     set_noninit_fields(clazz, dct, obj)
     return obj
 
