@@ -25,6 +25,7 @@ jobs:
       uses: abatilo/actions-poetry@v2
       with:
         poetry-version: ${{ matrix.poetry-version }}
+        poetry-plugins: "poetry-dynamic-versioning[plugin]"
     - name: build sdist
       run: poetry build
 
