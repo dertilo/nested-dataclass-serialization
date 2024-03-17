@@ -14,9 +14,9 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     IDKEY,
     NODE_ID_KEY,
     NODES_KEY,
+    Dataclass,
     OmegaConfDict,
     OmegaConfList,
-    Dataclass,
     PythonBuiltinData,
 )
 from nested_dataclass_serialization.strange_hack import (

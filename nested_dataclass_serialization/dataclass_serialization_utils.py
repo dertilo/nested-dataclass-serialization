@@ -1,6 +1,6 @@
 import dataclasses
 import importlib
-from typing import Any, TypeVar, Annotated
+from typing import Annotated, Any, TypeVar
 
 from beartype.vale import Is
 

@@ -1,13 +1,11 @@
 import dataclasses
 from hashlib import sha1
 
-from nested_dataclass_serialization.dataclass_serialization import (
-    serialize_dataclass,
-)
+from nested_dataclass_serialization.dataclass_serialization import serialize_dataclass
 from nested_dataclass_serialization.dataclass_serialization_utils import (
     IDKEY,
-    is_dunder,
     Dataclass,
+    is_dunder,
 )
 
 

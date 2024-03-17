@@ -9,10 +9,10 @@ import pytest
 from beartype.roar import BeartypeCallException
 
 from nested_dataclass_serialization.dataclass_serialization import (
-    encode_dataclass,
-    deserialize_dataclass,
-    serialize_dataclass,
     decode_dataclass,
+    deserialize_dataclass,
+    encode_dataclass,
+    serialize_dataclass,
 )
 from nested_dataclass_serialization.dataclass_serialization_utils import IDKEY
 
@@ -190,8 +190,6 @@ class Bar:
 @dataclass
 class Foo:
     bars: list[Bar]
-
-
 
 
 def test_object_registry() -> None:

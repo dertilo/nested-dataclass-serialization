@@ -3,9 +3,7 @@ import json
 from nested_dataclass_serialization.dataclass_json_decoding import (
     DataclassDecoderObjectHook,
 )
-from nested_dataclass_serialization.dataclass_json_encoding import (
-    DataclassEncoder,
-)
+from nested_dataclass_serialization.dataclass_json_encoding import DataclassEncoder
 from nested_dataclass_serialization.dataclass_serialization_utils import (
     CLASS_REF_KEY,
     ID_KEY,
