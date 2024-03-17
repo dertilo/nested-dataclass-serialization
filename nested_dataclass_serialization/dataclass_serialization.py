@@ -10,7 +10,10 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     CLASS_REF_KEY,
     ID_KEY,
     NODE_ID_KEY,
-    NODES_KEY, Dataclass, JsonLoadsOutput, NeStr,
+    NODES_KEY,
+    Dataclass,
+    JsonLoadsOutput,
+    NeStr,
 )
 
 
@@ -44,7 +47,6 @@ def _json_loads_decode_dataclass(
     class_ref_key: str = CLASS_REF_KEY,
     is_sparse: bool = False,
 ) -> Dataclass | JsonLoadsOutput:
-
     if is_sparse:
         dct = json.loads(s)
         assert NODES_KEY in dct.keys()

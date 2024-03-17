@@ -6,7 +6,8 @@ from nested_dataclass_serialization.dataclass_serialization import (
 )
 from nested_dataclass_serialization.dataclass_serialization_utils import (
     IDKEY,
-    is_dunder, Dataclass,
+    is_dunder,
+    Dataclass,
 )
 
 

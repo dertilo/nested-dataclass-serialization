@@ -31,7 +31,7 @@ class DataclassDecoderObjectHook:
                 fullpath = dct.pop(self.class_ref_key)
                 # TODO: here some try except with lookup in TARGET_CLASS_MAPPING
                 try:
-                    o=instantiate_via_importlib(dct, fullpath)
+                    o = instantiate_via_importlib(dct, fullpath)
                 finally:
                     logger.error(f"could not instantiate: {fullpath}")
                 self.object_registry[eid] = o

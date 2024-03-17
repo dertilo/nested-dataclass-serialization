@@ -8,8 +8,12 @@ from typing import ClassVar
 import pytest
 from beartype.roar import BeartypeCallException
 
-from nested_dataclass_serialization.dataclass_serialization import encode_dataclass, \
-    deserialize_dataclass, serialize_dataclass, decode_dataclass
+from nested_dataclass_serialization.dataclass_serialization import (
+    encode_dataclass,
+    deserialize_dataclass,
+    serialize_dataclass,
+    decode_dataclass,
+)
 from nested_dataclass_serialization.dataclass_serialization_utils import IDKEY
 
 
@@ -53,6 +57,7 @@ class AnotherDataClass:
         init=False,
         repr=False,
     )
+
 
 class Singleton(type):
     """
@@ -187,6 +192,8 @@ class Foo:
     bars: list[Bar]
 
 
+
+
 def test_object_registry() -> None:
     bar = Bar(x="test")
     foo = Foo(bars=[bar, bar])
@@ -273,7 +280,6 @@ def test_endeserialize_dataclass() -> None:
     dec = deserialize_dataclass(d)
     assert isinstance(dec, Foo), f"{dec=}"
     assert isinstance(dec.bars[0], Bar), f"{dec=}"
-
 
 
 # TODO

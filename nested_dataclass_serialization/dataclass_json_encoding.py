@@ -15,7 +15,9 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     NODE_ID_KEY,
     NODES_KEY,
     OmegaConfDict,
-    OmegaConfList, Dataclass, PythonBuiltinData,
+    OmegaConfList,
+    Dataclass,
+    PythonBuiltinData,
 )
 from nested_dataclass_serialization.strange_hack import (
     fix_module_if_class_in_same_file_as_main,
@@ -172,7 +174,8 @@ class DataclassEncoder(json.JSONEncoder):
         return [
             (name, self._obj2dict(value, dict_factory))
             for name, value in name_values
-            if value.__class__.__name__!="_UNDEFINED" or not self.skip_undefined # TODO(tilo): hardcoded this UNDEFINED here! think about it! and fix it!
+            if value.__class__.__name__ != "_UNDEFINED"
+            or not self.skip_undefined  # TODO(tilo): hardcoded this UNDEFINED here! think about it! and fix it!
         ]
 
     def _values_of_non_special_properties(self, obj: Any) -> KeyValues:
