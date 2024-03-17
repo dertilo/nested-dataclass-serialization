@@ -11,15 +11,24 @@ on:
 jobs:
 # based on: https://github.com/marketplace/actions/python-poetry-action
   ci:
-    runs-on: ubuntu-latest
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.11" ]
+        poetry-version: [ "1.7.1" ]
+        os: [ ubuntu-22.04 ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Python
         uses: actions/setup-python@v4
-        # see details (matrix, python-version, python-version-file, etc.)
-        # https://github.com/actions/setup-python
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
       - name: Setup a local virtual environment (if no poetry.toml file)
         run: |
           poetry config virtualenvs.create true --local
@@ -30,6 +39,8 @@ jobs:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
-        run: poetry install
+        run: poetry install --with dev
+      - name: Run the linter
+        run: poetry run pythonlinter
       - name: Run the automated tests
         run: poetry run pytest -v
