@@ -1,3 +1,7 @@
+![tests](https://github.com/dertilo/nested-dataclass-serialization/actions/workflows/tests.yml/badge.svg)
+![pypi](https://github.com/dertilo/nested-dataclass-serialization/actions/workflows/release.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 # nested dataclass serialization
 - lets you (de)serialize nested dataclasses from and to json
 - uses custom json-encoder for recursive serialization
