@@ -11,7 +11,7 @@ packages = [{ include = "nested_dataclass_serialization" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-beartype = "^0.16.3" # since 0.16.3 typehinting for Dataclass really works!
+beartype = "^0" # blindly trust beartype
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.2"
