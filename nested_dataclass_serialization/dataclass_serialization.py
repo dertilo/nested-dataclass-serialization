@@ -13,6 +13,7 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     Dataclass,
     JsonLoadsOutput,
     NeStr,
+    PythonBuiltinData,
 )
 
 
@@ -92,7 +93,7 @@ def encode_dataclass(  # noqa: PLR0913
     skip_keys: list[str] | None = None,
     sparse: bool = False,
     encode_for_hash: bool = False,
-) -> JsonLoadsOutput:
+) -> PythonBuiltinData:
     """
     # TODO: bad naming! cause it not only handles Dataclasses but also JsonLoadsOutput
     encode in the sense that the dictionary representation can be decoded to the nested dataclasses object again

@@ -17,7 +17,6 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     NODE_ID_KEY,
     NODES_KEY,
     Dataclass,
-    JsonLoadsOutput,
     OmegaConfDict,
     OmegaConfList,
     PythonBuiltinData,
@@ -73,7 +72,7 @@ class DataclassEncoder(json.JSONEncoder):
             node_dct = dct
         return node_dct
 
-    def default(self, o: Any) -> JsonLoadsOutput:
+    def default(self, o: Any) -> PythonBuiltinData:
         """
         this overwrites json.JSONEncoders default method
         """
