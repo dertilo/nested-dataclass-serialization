@@ -9,12 +9,15 @@ from collections.abc import Callable
 from hashlib import sha1
 from typing import Any
 
+from beartype.door import is_bearable
+
 from nested_dataclass_serialization.dataclass_serialization_utils import (
     CLASS_REF_KEY,
     IDKEY,
     NODE_ID_KEY,
     NODES_KEY,
     Dataclass,
+    JsonLoadsOutput,
     OmegaConfDict,
     OmegaConfList,
     PythonBuiltinData,
@@ -70,7 +73,7 @@ class DataclassEncoder(json.JSONEncoder):
             node_dct = dct
         return node_dct
 
-    def default(self, o: Any) -> PythonBuiltinData:
+    def default(self, o: Any) -> JsonLoadsOutput:
         """
         this overwrites json.JSONEncoders default method
         """
@@ -84,13 +87,15 @@ class DataclassEncoder(json.JSONEncoder):
             dict_factory=self._flat_dag_dict if self.sparse else dict,
         )
         if self.sparse:
+            assert isinstance(dct, dict)
             dct[NODES_KEY] = self._id2node_
-        return dct
+        return dct  # pyright: ignore[reportReturnType]
 
     def _obj2dict(  # noqa: C901, PLR0912, WPS231
         self,
         obj: Any,
         dict_factory: DictFactory,
+        name: str | None = None,
     ) -> PythonBuiltinData:
         if dataclasses.is_dataclass(obj):
             out = self._encode_dataclass(obj, dict_factory)
@@ -130,6 +135,8 @@ class DataclassEncoder(json.JSONEncoder):
                 else obj
             )
             out = obj
+        if not is_bearable(out, PythonBuiltinData):
+            logger.error(f"cannot encode: {name}: {out=}")
         return out
 
     def _encode_dataclass(self, obj: Dataclass, dict_factory: DictFactory) -> dict:
@@ -156,7 +163,9 @@ class DataclassEncoder(json.JSONEncoder):
     def _fields_to_serialize(self, dict_factory: DictFactory, obj: Any) -> KeyValues:
         def exclude_for_hash(o: Dataclass, f_name: str) -> bool:
             if self.encode_for_hash and hasattr(o, "__exclude_from_hash__"):
-                out = f_name in o.__exclude_from_hash__
+                out = (
+                    f_name in o.__exclude_from_hash__
+                )  # pyright: ignore[reportAttributeAccessIssue]
             else:
                 out = False
             return out
@@ -172,7 +181,7 @@ class DataclassEncoder(json.JSONEncoder):
         )
         name_values = ((f.name, getattr(obj, f.name)) for f in feelds)
         return [
-            (name, self._obj2dict(value, dict_factory))
+            (name, self._obj2dict(value, dict_factory, name=name))
             for name, value in name_values
             if value.__class__.__name__ != "_UNDEFINED"
             or not self.skip_undefined  # TODO(tilo): hardcoded this UNDEFINED here! think about it! and fix it!

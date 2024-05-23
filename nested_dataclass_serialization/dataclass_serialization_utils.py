@@ -8,9 +8,9 @@ from beartype.vale import Is
 NeStr = Annotated[str, Is[lambda s: len(s) > 0]]
 Dataclass = Annotated[object, Is[lambda o: dataclasses.is_dataclass(o)]]
 JsonLoadsOutput = (
-    dict | list | str | int | float | bool | None
+    dict[str, Any] | list[Any] | str | int | float | bool | None
 )  # forgot anything? set  cannot be handled by json
-PythonBuiltinData = JsonLoadsOutput | tuple | set
+PythonBuiltinData = JsonLoadsOutput | tuple[Any, ...] | set[Any]
 
 
 # -------------------------------------------------------------------------------------
@@ -38,7 +38,10 @@ def instantiate_via_importlib(
     clazz = getattr(importlib.import_module(module_reference), class_name)
     if hasattr(clazz, "create"):
         out = clazz.create(**d)
-    elif hasattr(clazz, dataclasses._FIELDS):  # noqa: SLF001
+    elif hasattr(
+        clazz,
+        dataclasses._FIELDS,  # pyright: ignore[reportAttributeAccessIssue]  # noqa: SLF001
+    ):
         out = shallow_dataclass_from_dict(clazz, d)
     else:
         out = clazz(**d)
@@ -54,6 +57,7 @@ def shallow_dataclass_from_dict(clazz: type[T], dct: dict) -> T:
     is used as a "factory" in instantiate_via_importlib
     dict can contain dataclasses or whatever objects!
     """
+    assert dataclasses.is_dataclass(clazz)  # just for type narrowing
     kwargs = {
         f.name: dct[f.name]
         for f in dataclasses.fields(clazz)
@@ -65,6 +69,9 @@ def shallow_dataclass_from_dict(clazz: type[T], dct: dict) -> T:
 
 
 def set_noninit_fields(cls: Dataclass, dct: dict, obj: Any) -> None:
+    assert dataclasses.is_dataclass(
+        cls,
+    )  # just for type narrowing -> even though beartype checks this, pyright still wants an assert
     state_fields = (
         f for f in dataclasses.fields(cls) if (not f.init and f.name in dct)
     )

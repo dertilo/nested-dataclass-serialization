@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 from nested_dataclass_serialization.dataclass_json_decoding import (
     DataclassDecoderObjectHook,
@@ -16,7 +17,7 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
 
 
 def decode_dataclass(
-    o: dict | (list | tuple),
+    o: dict[str, Any] | (list[Any] | tuple[Any]),
     class_ref_key: str = CLASS_REF_KEY,
     is_sparse: bool = False,
 ) -> Dataclass | JsonLoadsOutput:
@@ -91,7 +92,7 @@ def encode_dataclass(  # noqa: PLR0913
     skip_keys: list[str] | None = None,
     sparse: bool = False,
     encode_for_hash: bool = False,
-) -> dict | (list | (tuple | set)):
+) -> JsonLoadsOutput:
     """
     # TODO: bad naming! cause it not only handles Dataclasses but also JsonLoadsOutput
     encode in the sense that the dictionary representation can be decoded to the nested dataclasses object again
