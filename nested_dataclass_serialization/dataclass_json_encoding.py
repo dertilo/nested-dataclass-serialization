@@ -98,10 +98,6 @@ class DataclassEncoder(json.JSONEncoder):
     ) -> PythonBuiltinData:
         if dataclasses.is_dataclass(obj):
             out = self._encode_dataclass(obj, dict_factory)
-        elif isinstance(obj, tuple) and hasattr(obj, "_fields"):
-            # TODO: this could return any class that implements _fields method! WTF! not what I want!
-            raise CannotEncodeError
-            # out = type(obj)(*(self._obj2dict(v, dict_factory) for v in obj))
         elif isinstance(obj, list | tuple | OmegaConfList):
             if isinstance(obj, OmegaConfList):
                 obj = list(obj)

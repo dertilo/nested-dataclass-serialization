@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, overload
 
 from nested_dataclass_serialization.dataclass_json_decoding import (
     DataclassDecoderObjectHook,
@@ -11,6 +11,7 @@ from nested_dataclass_serialization.dataclass_serialization_utils import (
     NODE_ID_KEY,
     NODES_KEY,
     Dataclass,
+    DataclassP,
     JsonLoadsOutput,
     NeStr,
     PythonBuiltinData,
@@ -64,7 +65,7 @@ def _json_loads_decode_dataclass(
 
 
 def serialize_dataclass(  # noqa: PLR0913
-    d: str | Dataclass,  # TODO: WTF why str?
+    d: DataclassP,
     class_reference_key: str = CLASS_REF_KEY,
     skip_undefined: bool = True,
     skip_keys: list[str] | None = None,
@@ -86,14 +87,39 @@ def serialize_dataclass(  # noqa: PLR0913
     )
 
 
-def encode_dataclass(  # noqa: PLR0913
-    d: Dataclass | JsonLoadsOutput | tuple,
+@overload
+def encode_dataclass(
+    d: DataclassP,
     class_reference_key: str = CLASS_REF_KEY,
     skip_undefined: bool = True,
     skip_keys: list[str] | None = None,
     sparse: bool = False,
     encode_for_hash: bool = False,
-) -> PythonBuiltinData:
+) -> dict[str, Any]:  #
+    ...
+
+
+@overload
+def encode_dataclass(
+    d: JsonLoadsOutput | tuple[Any, ...],
+    class_reference_key: str = CLASS_REF_KEY,
+    skip_undefined: bool = True,
+    skip_keys: list[str] | None = None,
+    sparse: bool = False,
+    encode_for_hash: bool = False,
+) -> PythonBuiltinData:  #
+    ...
+
+
+def encode_dataclass(  # noqa: PLR0913
+    d: DataclassP | JsonLoadsOutput | tuple[Any, ...],
+    # d: Dataclass,# | PythonBuiltinData, # TODO: who wants to put in anything else than a dataclass?
+    class_reference_key: str = CLASS_REF_KEY,
+    skip_undefined: bool = True,
+    skip_keys: list[str] | None = None,
+    sparse: bool = False,
+    encode_for_hash: bool = False,
+) -> PythonBuiltinData:  # dict[str,Any]: #
     """
     # TODO: bad naming! cause it not only handles Dataclasses but also JsonLoadsOutput
     encode in the sense that the dictionary representation can be decoded to the nested dataclasses object again

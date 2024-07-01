@@ -1,6 +1,6 @@
 import dataclasses
 import importlib
-from typing import Annotated, Any, TypeVar
+from typing import Annotated, Any, ClassVar, Protocol, TypeVar, runtime_checkable
 
 from beartype.vale import Is
 
@@ -14,6 +14,15 @@ PythonBuiltinData = JsonLoadsOutput | tuple[Any, ...] | set[Any]
 
 
 # -------------------------------------------------------------------------------------
+
+
+@runtime_checkable
+class DataclassP(Protocol):
+    # see: https://stackoverflow.com/questions/54668000/type-hint-for-an-instance-of-a-non-specific-dataclass
+    # as already noted in comments, checking for this attribute is currently
+    # the most reliable way to ascertain that something is a dataclass
+    __dataclass_fields__: ClassVar[dict[str, Any]]
+
 
 IDKEY = "_id_"
 ID_KEY = IDKEY  # TODO: rename
