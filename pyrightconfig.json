@@ -1,0 +1,24 @@
+{
+  "typeCheckingMode": "off", //  lots of json parsing here, not sure whether one can properly type check such code!
+  "reportAny": false,
+  "reportImplicitOverride": false,
+  // cause typing.override leads to false positives
+  "reportMissingSuperCall": false,
+  "reportMissingParameterType": false, // already done by ruff
+  "reportUnusedCallResult": false, // gibt schlimmeres!
+  "reportPrivateUsage": false, // underscore convention is enough!
+  "reportIncompatibleMethodOverride": false, // lets ignore liskov, inheritance is bad anyhow
+  "reportIncompatibleVariableOverride": false,// lets ignore liskov, inheritance is bad anyhow
+  "reportMissingTypeStubs": false,
+  // warnings
+  "reportUnknownLambdaType": "warning", // seems to affect all lambdas
+  "reportUnknownVariableType": "warning",
+  "reportUnknownMemberType": "warning",
+  "reportUnknownArgumentType": "warning",
+  "reportMissingTypeArgument": "warning",
+  "reportUnknownParameterType": "warning",
+  "reportUnusedVariable": "warning",
+  "exclude": [
+      "**/___*", // files just for debugging
+  ],
+}

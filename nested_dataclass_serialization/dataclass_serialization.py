@@ -64,7 +64,7 @@ def _json_loads_decode_dataclass(
     return json.loads(s, object_hook=object_hook)
 
 
-def serialize_dataclass(  # noqa: PLR0913
+def serialize_dataclass(  # noqa: PLR0913, PLR0917
     d: DataclassP,
     class_reference_key: str = CLASS_REF_KEY,
     skip_undefined: bool = True,
@@ -95,8 +95,7 @@ def encode_dataclass(
     skip_keys: list[str] | None = None,
     sparse: bool = False,
     encode_for_hash: bool = False,
-) -> dict[str, Any]:  #
-    ...
+) -> dict[str, Any]: ...
 
 
 @overload
@@ -107,11 +106,10 @@ def encode_dataclass(
     skip_keys: list[str] | None = None,
     sparse: bool = False,
     encode_for_hash: bool = False,
-) -> PythonBuiltinData:  #
-    ...
+) -> PythonBuiltinData: ...
 
 
-def encode_dataclass(  # noqa: PLR0913
+def encode_dataclass(  # noqa: PLR0913, PLR0917
     d: DataclassP | JsonLoadsOutput | tuple[Any, ...],
     # d: Dataclass,# | PythonBuiltinData, # TODO: who wants to put in anything else than a dataclass?
     class_reference_key: str = CLASS_REF_KEY,

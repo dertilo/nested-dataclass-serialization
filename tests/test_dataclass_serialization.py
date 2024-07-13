@@ -1,12 +1,9 @@
-# flake8: noqa
-import json
+import json  # noqa: INP001
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from pprint import pprint
 from typing import ClassVar
 
 import pytest
-from beartype.roar import BeartypeCallException
 
 from nested_dataclass_serialization.dataclass_serialization import (
     decode_dataclass,
@@ -121,7 +118,7 @@ class TestDataClass:
         return i_got_serialized
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_object() -> TestDataClass:
     obj = AnotherDataClass("samesame")
     return TestDataClass(
@@ -168,7 +165,7 @@ def test_private_field(test_object: TestDataClass) -> None:
     test_object.bla["foo"][0]._another_private_field = "changed value"  # noqa: SLF001
     sd = serialize_dataclass(test_object)
     deser_obj = deserialize_dataclass(sd)
-    print(f"{deser_obj=}")
+    print(f"{deser_obj=}")  # noqa: T201
     assert (
         deser_obj._private_field != test_object._private_field  # noqa: SLF001
     ), deser_obj
@@ -178,8 +175,6 @@ def test_private_field(test_object: TestDataClass) -> None:
     assert str(deser_obj) == str(test_object), deser_obj
 
 
-#
-#
 @dataclass
 class Bar:
     x: str
@@ -292,18 +287,3 @@ def test_endeserialize_dataclass() -> None:
 #     # assert all([isinstance(x, Foo) for x in dec])
 #     # assert all([isinstance(x.bars[0], Bar) for x in dec])
 #     # assert all([isinstance(x.bars[0].casing, TestCasing) for x in dec])
-
-
-if __name__ == "__main__":
-    """
-    for some stupid reason this doesn't work form pycharm but form command-line
-    even though I set working-directory in run-configs
-    """
-    o = TestDataClass(
-        foo="foo",
-        bla={"foo": [AnotherDataClass("foo") for k in range(3)], "bar": None},
-    )
-    assert o.__class__.__module__ == "__main__"
-    s = encode_dataclass(o)
-    o2 = decode_dataclass(s)
-    print(o2)

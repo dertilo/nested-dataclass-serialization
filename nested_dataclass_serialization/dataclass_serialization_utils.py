@@ -6,7 +6,7 @@ from beartype.vale import Is
 
 # ------------TODO: move the following upstream to some utils repo?-----------------
 NeStr = Annotated[str, Is[lambda s: len(s) > 0]]
-Dataclass = Annotated[object, Is[lambda o: dataclasses.is_dataclass(o)]]
+Dataclass = Annotated[object, Is[dataclasses.is_dataclass]]
 JsonLoadsOutput = (
     dict[str, Any] | list[Any] | str | int | float | bool | None
 )  # forgot anything? set  cannot be handled by json

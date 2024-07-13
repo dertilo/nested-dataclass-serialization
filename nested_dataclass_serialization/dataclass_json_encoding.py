@@ -29,9 +29,7 @@ logger = logging.getLogger(
     __name__,
 )  # "The name is potentially a period-separated hierarchical", see: https://docs.python.org/3.10/library/logging.html
 
-salt = (
-    uuid.uuid1()
-)  # to prevent clashes when "merging" graphs built in different python processes, cause then objects-ids could clash!
+salt = uuid.uuid1()  # to prevent clashes when "merging" graphs built in different python processes, cause then objects-ids could clash!
 
 KEY, VALUE = str, Any
 KeyValues = list[tuple[KEY, VALUE]]
@@ -158,9 +156,7 @@ class DataclassEncoder(json.JSONEncoder):
     def _fields_to_serialize(self, dict_factory: DictFactory, obj: Any) -> KeyValues:
         def exclude_for_hash(o: Dataclass, f_name: str) -> bool:
             if self.encode_for_hash and hasattr(o, "__exclude_from_hash__"):
-                out = (
-                    f_name in o.__exclude_from_hash__
-                )  # pyright: ignore[reportAttributeAccessIssue]
+                out = f_name in o.__exclude_from_hash__  # pyright: ignore[reportAttributeAccessIssue]
             else:
                 out = False
             return out
@@ -203,7 +199,7 @@ class DataclassEncoder(json.JSONEncoder):
             )
         ]
 
-    def _serialize_anyhow(self, obj: Any) -> KeyValues:
+    def _serialize_anyhow(self, obj: Any) -> KeyValues:  # noqa: PLR6301
         if hasattr(obj, "__serialize_anyhow__"):
             serialize_those = [
                 (name, getattr(obj, name))
